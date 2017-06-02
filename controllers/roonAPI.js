@@ -43,16 +43,23 @@ var roon = new RoonApi({
   }
 });
 
-var core_settings = roon.load_config("settings") || {
-    tmp_settings: []
-};
+var core_settings = roon.load_config("settings") || {};
 
 function settingLayout(settings) {
-    return {
-        values:    settings,
-        layout:    [],
-        has_error: false
+    var l = {
+      values:    settings,
+      layout:    [],
+      has_error: false
     };
+
+    l.layout.push({
+        type:      "string",
+        title:     "Default Zone",
+        maxlength: 256,
+        setting:   "defaultZone",
+    });
+
+    return l;
 }
 var svc_status = new RoonApiStatus(roon);
 var svc_settings = new RoonApiSettings(roon, {
@@ -67,8 +74,6 @@ var svc_settings = new RoonApiSettings(roon, {
             core_settings = l.values;
             svc_settings.update_settings(l);
             roon.save_config("settings", core_settings);
-
-            set_timer(true);
         }
     }
 });
