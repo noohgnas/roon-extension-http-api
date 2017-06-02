@@ -14,11 +14,12 @@ var zones = [];
 var timeout;
 
 var roon = new RoonApi({
-  extension_id:        'st0g1e.roon-http-api',
-  display_name:        "roon-http-api",
-  display_version:     "0.0.1",
-  publisher:           'bastian ramelan',
-  email:		'st0g1e@yahoo.com',
+  extension_id:    'nooh.comd.roon-http-api',
+  display_name:    'roon-http-api',
+  display_version: '0.0.2',
+  publisher:       'nooh',
+  email:           'noohgnas@gmail.com',
+  website:         'https://noohgnas.com',
 
   core_paired: function(core_) {
     core = core_;
