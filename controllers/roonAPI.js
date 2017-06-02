@@ -3,6 +3,7 @@ var RoonApiTransport = require("node-roon-api-transport");
 var RoonApiStatus    = require("node-roon-api-status");
 var RoonApiImage     = require("node-roon-api-image");
 var RoonApiBrowse    = require("node-roon-api-browse");
+var RoonApiSettings  = require("node-roon-api-settings");
 
 var path = require('path');
 
@@ -42,16 +43,44 @@ var roon = new RoonApi({
    }
 });
 
+var core_settings = roon.load_config("settings") || {
+    tmp_settings: []
+};
+
+function settingLayout(settings) {
+    return {
+        values:    settings,
+        layout:    [],
+        has_error: false
+    };
+}
 var svc_status = new RoonApiStatus(roon);
+var svc_settings = new RoonApiSettings(roon, {
+    get_settings: function(cb) {
+        cb(settingLayout(core_settings));
+    },
+    save_settings: function(req, isdryrun, settings) {
+        let l = settingLayout(settings.values);
+        req.send_complete(l.has_error ? "NotValid" : "Success", { settings: l });
+
+        if (!isdryrun && !l.has_error) {
+            core_settings = l.values;
+            svc_settings.update_settings(l);
+            roon.save_config("settings", core_settings);
+
+            set_timer(true);
+        }
+    }
+});
+
 
 roon.init_services({
    required_services: [ RoonApiTransport, RoonApiBrowse, RoonApiImage ],
-   provided_services: [ svc_status ],
+   provided_services: [ svc_status, svc_settings ],
 });
 
 svc_status.set_status("Extension enabled", false);
 roon.start_discovery();
-
 
 // --------------- APIs ------------------
 

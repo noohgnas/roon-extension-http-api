@@ -5,11 +5,12 @@
   "main": "server.js",
   "private": true,
   "dependencies": {
-    "node-roon-api"		: "github:roonlabs/node-roon-api",
-    "node-roon-api-image"	: "github:roonlabs/node-roon-api-image",
-    "node-roon-api-status"	: "github:roonlabs/node-roon-api-status",
-    "node-roon-api-transport"	: "github:roonlabs/node-roon-api-transport",
-    "node-roon-api-browse"      : "github:roonlabs/node-roon-api-browse",
+    "node-roon-api": "github:roonlabs/node-roon-api",
+    "node-roon-api-image": "github:roonlabs/node-roon-api-image",
+    "node-roon-api-status": "github:roonlabs/node-roon-api-status",
+    "node-roon-api-transport": "github:roonlabs/node-roon-api-transport",
+    "node-roon-api-browse": "github:roonlabs/node-roon-api-browse",
+    "node-roon-api-settings": "github:roonlabs/node-roon-api-settings",
     "express": "4.x"
   }
 }
