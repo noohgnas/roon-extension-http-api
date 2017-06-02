@@ -14,33 +14,32 @@ var zones = [];
 var timeout;
 
 var roon = new RoonApi({
-   extension_id:        'st0g1e.roon-http-api',
-   display_name:        "roon-http-api",
-   display_version:     "0.0.1",
-   publisher:           'bastian ramelan',
-   email:		'st0g1e@yahoo.com',
+  extension_id:        'st0g1e.roon-http-api',
+  display_name:        "roon-http-api",
+  display_version:     "0.0.1",
+  publisher:           'bastian ramelan',
+  email:		'st0g1e@yahoo.com',
 
-   core_paired: function(core_) {
-	core = core_;
+  core_paired: function(core_) {
+    core = core_;
 
-	let transport = core_.services.RoonApiTransport;
+    let transport = core_.services.RoonApiTransport;
 
-	core.services.RoonApiTransport.subscribe_zones((response, msg) => {
-            if (response == "Subscribed") {
-                let curZones = msg.zones.reduce((p,e) => (p[e.zone_id] = e) && p, {});
-                zones = curZones;
-            } else if (response == "Changed") {
-                var z;
-                if (msg.zones_removed) msg.zones_removed.forEach(e => delete(zones[e.zone_id]));
-                if (msg.zones_added)   msg.zones_added  .forEach(e => zones[e.zone_id] = e);
-                if (msg.zones_changed) msg.zones_changed.forEach(e => zones[e.zone_id] = e);
-            }
-        });
-   },
+    core.services.RoonApiTransport.subscribe_zones((response, msg) => {
+      if (response == "Subscribed") {
+        let curZones = msg.zones.reduce((p,e) => (p[e.zone_id] = e) && p, {});
+        zones = curZones;
+      } else if (response == "Changed") {
+        var z;
+        if (msg.zones_removed) msg.zones_removed.forEach(e => delete(zones[e.zone_id]));
+        if (msg.zones_added)   msg.zones_added  .forEach(e => zones[e.zone_id] = e);
+        if (msg.zones_changed) msg.zones_changed.forEach(e => zones[e.zone_id] = e);
+      }
+    });
+  },
 
-   core_unpaired: function(core_) {
-
-   }
+  core_unpaired: function(core_) {
+  }
 });
 
 var core_settings = roon.load_config("settings") || {
